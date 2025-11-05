@@ -1,6 +1,8 @@
 * {
   background: black;
   color: white;
+  font-size: calc(24pt + 10%);
+  font-family: "Comic Sans MS", cursive;
 }
 html,
 body {
@@ -14,4 +16,24 @@ body {
   align-items: center;
   justify-content: center;
   flex-direction: column;
+}
+input,
+button {
+  border: 2px solid white !important;
+  border-radius: 5px;
+  text-align: center;
+  margin: 5px;
+  height: 40%;
+}
+/* button {
+  margin-top: 15%;
+} */
+form {
+  border: 4px solid white;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+  width: 50%;
+  height: 50%;
+  justify-content: space-between;
 }
