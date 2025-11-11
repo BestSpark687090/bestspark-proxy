@@ -4,9 +4,7 @@ const swAllowedHostnames = ["localhost", "127.0.0.1"];
 async function registerSW() {
   if ("serviceWorker" in navigator) {
     try {
-      const registration = await navigator.serviceWorker.register(stockSW, {
-        scope: "/js/",
-      });
+      const registration = await navigator.serviceWorker.register(stockSW);
       if (registration.installing) {
         console.log("Service worker installing");
       } else if (registration.waiting) {

@@ -1,1 +1,6 @@
-console.log("hi i'm a serviceworker :3");
+self.addEventListener("install", (event) => {
+  console.log("install!!");
+});
+self.addEventListener("fetch", (event) => {
+  console.log("fetch!!");
+});
