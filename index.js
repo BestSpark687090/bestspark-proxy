@@ -2,6 +2,7 @@ var http = require("http");
 var fs = require("fs");
 const express = require("express");
 const app = express();
+const funcs = require("./public/js/funcs.min.js");
 const port = 8080;
 //create a server object
 app.get("/", (req, res) => {
@@ -12,5 +13,5 @@ app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
 app.get("/notuv/:params", function (req, res) {
-  res.send(req.params);
+  res.send(decodeURIComponent(funcs.encode(req.params.params)));
 });

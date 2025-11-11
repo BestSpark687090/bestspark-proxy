@@ -13,5 +13,6 @@ document.querySelector("form").addEventListener("submit", async function (e) {
     newURL = "https://duckduckgo.com/search?q=" + search.value;
   }
   let iframe = document.querySelector("iframe");
-  iframe.href = "/notuv/" + uv.encode(search);
+  iframe.src = "/notuv/" + uv.encode(newURL);
+  iframe.hidden = false;
 });
