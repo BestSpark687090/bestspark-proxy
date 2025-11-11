@@ -4,7 +4,7 @@ const express = require("express");
 const app = express();
 const funcs = require("./public/js/funcs.min.js");
 const port = 8080;
-//create a server object
+//create a server objec
 app.get("/", (req, res) => {
   res.sendFile(__dirname + "/public/index.html");
 });
