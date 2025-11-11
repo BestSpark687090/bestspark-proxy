@@ -1,5 +1,9 @@
-document.querySelector("form").addEventListener("submit", function (e) {
+document.querySelector("form").addEventListener("submit", async function (e) {
   e.preventDefault();
   let search = document.querySelector(".url");
-  alert(search.value);
+  try {
+    await registerSW();
+  } catch (err) {
+    throw err;
+  }
 });
