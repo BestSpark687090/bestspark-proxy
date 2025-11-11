@@ -6,4 +6,12 @@ document.querySelector("form").addEventListener("submit", async function (e) {
   } catch (err) {
     throw err;
   }
+  let newURL = "";
+  if (isValidUrl(search.value)) {
+    newURL = search.value;
+  } else {
+    newURL = "https://duckduckgo.com/search?q=" + search.value;
+  }
+  let iframe = document.querySelector("iframe");
+  iframe.href = "/notuv/" + uv.encode(search);
 });

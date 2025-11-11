@@ -11,6 +11,6 @@ app.use(express.static("public"));
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
 });
-app.get("/service/:params", function (req, res) {
+app.get("/notuv/:params", function (req, res) {
   res.send(req.params);
 });
