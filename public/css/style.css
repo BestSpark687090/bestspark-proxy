@@ -1,4 +1,4 @@
-* {
+*:not(iframe) {
   background: black;
   color: white;
   font-size: calc(24pt + 10%);
@@ -41,4 +41,7 @@ iframe {
   width: 100%;
   height: 100%;
   z-index: 1;
+  position: absolute;
+  background-color: white;
+  color: red;
 }
