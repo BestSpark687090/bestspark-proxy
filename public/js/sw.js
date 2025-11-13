@@ -1,12 +1,12 @@
 // h :/
 console.log(self);
-async function checkForSelfDestruct(){
+async function checkForSelfDestruct() {
   let regs = await self.navigator.serviceWorker.getRegistrations();
-  if(regs.length<3){
+  if (regs.length < 3) {
     return;
   }
   for (let reg of regs) {
-    if(reg === self){
+    if (reg === self) {
       continue;
     }
     if (reg.active.scriptURL.includes("/js/")) {
@@ -16,4 +16,14 @@ async function checkForSelfDestruct(){
     }
   }
 }
-checkForSelfDestruct()
+checkForSelfDestruct();
+const addResourcesToCache = async (resources) => {
+  const cache = await caches.open("v1");
+  await cache.addAll(resources);
+};
+
+self.addEventListener("install", (event) => {
+  // event.waitUntil(
+  //   addResourcesToCache(["/notuv/script.js", "/notuv/style.css"])
+  // );
+});

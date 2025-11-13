@@ -22,6 +22,7 @@ async function registerSW() {
     navigator.serviceWorker
       .register("/js/sw.js", {
         updateViaCache: "none",
+        scope: "/",
       })
       .then(
         (registration) => {
