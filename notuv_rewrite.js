@@ -1,29 +1,6 @@
-var http = require("http");
-var fs = require("fs");
-
-const express = require("express");
-const app = express();
-const fetch = (...args) =>
-  import("node-fetch").then(({ default: fetch }) => fetch(...args));
-
-const rewrite = require("./notuv_rewrite.js");
-const port = 8080;
-//create a server object
-app.get("/", (req, res) => {
-  res.sendFile(__dirname + "/public/index.html");
-});
-app.get("/js/sw.js", function (req, res) {
-  res.setHeader("Service-Worker-Allowed", "/");
-  res.sendFile(__dirname + "/public/js/sw.js");
-});
-app.use(express.static("public"));
-app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`);
-});
-
-app.get("/notuv/:params", rewrite);
-/*
-app.get("/notuv/:params", async function (req, res) {
+const funcs = require("./public/js/funcs.min.js");
+let currentBaseURL = "";
+async function rewrite(req, res) {
   try {
     // todo: log urls for further testing
     // const fetch = await import("node-fetch");
@@ -65,22 +42,7 @@ app.get("/notuv/:params", async function (req, res) {
     console.log(url, "final URL");
     let resf = await fetch(url);
     let txt = await resf.text();
-    // For now, just href.
-    let hrefMatches = [...txt.matchAll(/href="([a-zA-Z:\/?&0-9_#-.]*)"/g)];
-    for (let i = 0; i < hrefMatches.length; i++) {
-      txt = txt.replaceAll(
-        hrefMatches[i][0],
-        `href="${funcs.encode(hrefMatches[i][1])}"`
-      );
-    }
-    let srcMatches = [...txt.matchAll(/src="([a-zA-Z:\/?&0-9_#-.]*)"/g)];
-    for (let i = 0; i < srcMatches.length; i++) {
-      txt = txt.replaceAll(
-        srcMatches[i][0],
-        `src="${funcs.encode(srcMatches[i][1])}"`
-      );
-    }
-    res.send(txt);
+    txt.res.send(txt);
     res.end();
   } catch (e) {
     // I DONT CARE
@@ -89,5 +51,5 @@ app.get("/notuv/:params", async function (req, res) {
       throw e;
     }
   }
-});
-*/
+}
+module.exports = rewrite;
