@@ -1,14 +1,29 @@
+// Pre-unregister SW because I want you ONLY when the time comes
+document.addEventListener("DOMContentLoaded", async function () {
+  let regs = await navigator.serviceWorker.getRegistrations();
+  for (let reg of regs) {
+    if (reg.active.scriptURL.includes("/js/")) {
+      reg.unregister();
+      console.log("done!");
+      break;
+    }
+  }
+});
+var currentURL = "";
 document.querySelector("form").addEventListener("submit", async function (e) {
   e.preventDefault();
   let url = document.querySelector(".url");
   try {
-    await registerSW();
+    var sw = await registerSW();
+    console.log("registered sw");
   } catch (err) {
+    console.log("didnt register :(");
     throw err;
   }
   let newURL = search(url.value, "https://www.duckduckgo.com/search?q=%s");
   let iframe = document.querySelector("iframe");
   iframe.src = "/notuv/" + uv.encode(newURL);
+  currentURL = newURL;
   let iframeWin =
     iframe.contentWindow ||
     iframe.contentDocument.document ||
@@ -26,7 +41,6 @@ document.querySelector("form").addEventListener("submit", async function (e) {
     }
 
     const listener = function (e) {
-      alert(alertMessage);
       cb();
     };
 
@@ -50,7 +64,6 @@ document.querySelector("form").addEventListener("submit", async function (e) {
   );
   iframe.addEventListener("load", loader);
   function loader(e) {
-    alert("goob!");
     let all = iDoc.querySelectorAll("*[href]"); // when ready, change ts to *[src], *[href]
     all.forEach(function (e) {
       // js href for now.
@@ -67,15 +80,3 @@ document.querySelector("form").addEventListener("submit", async function (e) {
   // }, 100);
   iframe.hidden = false;
 });
-/*
-// Source - https://stackoverflow.com/a
-// Posted by SoniCoder, modified by community. See post 'Timeline' for change history
-// Retrieved 2025-11-11, License - CC BY-SA 3.0
-
-var iframe = document.getElementById('iframeID');
-iframe = iframe.contentWindow || ( iframe.contentDocument.document || iframe.contentDocument);
-
-iframe.document.open();
-iframe.document.write('Hello World!');
-iframe.document.close();
-*/

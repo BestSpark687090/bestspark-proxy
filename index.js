@@ -19,7 +19,12 @@ app.get("/notuv/:params", async function (req, res) {
   // todo: log urls for further testing
   // const fetch = await import("node-fetch");
   let url = decodeURIComponent(funcs.encode(req.params.params));
+
+  if (url.includes(".hs") || url.includes(",cqs")) {
+    url = funcs.decode(url);
+  }
   console.log(url);
+  // todo, make the urls actually have the current url path's stuff :/
   // res.send(`<a href="https://google.com/script.js">HEY</a>`);
   let resf = await fetch(url);
   let txt = await resf.text();

@@ -1,1 +1,2 @@
 // h :/
+console.log(self);
