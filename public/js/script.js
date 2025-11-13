@@ -20,7 +20,7 @@ document.querySelector("form").addEventListener("submit", async function (e) {
     console.log("didnt register :(");
     throw err;
   }
-  let newURL = search(url.value, "https://www.duckduckgo.com/search?q=%s");
+  let newURL = search(url.value||"https://bestspark.onrender.com", "https://www.duckduckgo.com/search?q=%s");
   let iframe = document.querySelector("iframe");
   iframe.src = "/notuv/" + uv.encode(newURL);
   currentURL = newURL;
@@ -56,12 +56,12 @@ document.querySelector("form").addEventListener("submit", async function (e) {
       target.addEventListener(eventType, listener);
     }
   }
-  addSafeListener(
-    iframe.contentWindow.document,
-    "DOMContentLoaded",
-    "Alert 2 & 3 & 5: DOMContentLoaded on iframe.contentWindow.document/contentDocument",
-    loader
-  );
+  // addSafeListener(
+  //   iframe.contentWindow.document,
+  //   "DOMContentLoaded",
+  //   "Alert 2 & 3 & 5: DOMContentLoaded on iframe.contentWindow.document/contentDocument",
+  //   loader
+  // );
   iframe.addEventListener("load", loader);
   function loader(e) {
     let all = iDoc.querySelectorAll("*[href]"); // when ready, change ts to *[src], *[href]

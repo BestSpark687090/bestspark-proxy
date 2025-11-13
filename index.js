@@ -28,6 +28,13 @@ app.get("/notuv/:params", async function (req, res) {
   // res.send(`<a href="https://google.com/script.js">HEY</a>`);
   let resf = await fetch(url);
   let txt = await resf.text();
+  // For now, just href.
+  let hrefMatches =  [...txt.matchAll(/href="([a-zA-Z:\/?&0-9_#-.]*)"/g)];
+  // console.log(hrefMatches[1][1])
+  for (let i=0;i<hrefMatches.length;i++){
+    // console.log("match")
+    txt = txt.replaceAll(hrefMatches[i][0],`href="${funcs.encode(hrefMatches[i][1])}"`)
+  }
   res.send(txt);
   res.end();
 });
