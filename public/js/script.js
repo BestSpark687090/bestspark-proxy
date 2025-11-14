@@ -42,7 +42,13 @@ document.querySelector("form").addEventListener("submit", async function (e) {
   //     console.error("Target element is null for event:", alertMessage);
   //     return;
   //   }
+  /**
+ * var frameElement = document.getElementById('frame');
+    var frameDocument = frameElement.contentWindow ? frameElement.contentWindow : frameElement.contentDocument.defaultView;
 
+    var x = frameDocument.getElementsByClassName("text");
+    x[0].style.backgroundColor = "pink";
+ */
   //   const listener = function (e) {
   //     cb();
   //   };
