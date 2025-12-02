@@ -1,3 +1,4 @@
+const funcs = require("./public/js/funcs.min.js");
 async function rewrite(req, res) {
   try {
     // todo: log urls for further testing
@@ -12,7 +13,8 @@ async function rewrite(req, res) {
         url.endsWith(".hs") || // encoded types.
         url.endsWith(",cqs") ||
         url.endsWith(",plg") ||
-        url.startsWith("//")
+        url.startsWith("//") ||
+        url.endsWith(".html")
       ) &&
       url.startsWith("http")
     ) {
@@ -40,21 +42,59 @@ async function rewrite(req, res) {
     console.log(url, "final URL");
     let resf = await fetch(url);
     let txt = await resf.text();
+
     // For now, just href.
     let hrefMatches = [...txt.matchAll(/href="([a-zA-Z:\/?&0-9_#-.]*)"/g)];
     for (let i = 0; i < hrefMatches.length; i++) {
-      txt = txt.replaceAll(
-        hrefMatches[i][0],
-        `href="${funcs.encode(hrefMatches[i][1])}"`
-      );
+      // console.log("did a href replacement");
+      if (hrefMatches[i][0].includes("http")) {
+        txt = txt.replaceAll(
+          hrefMatches[i][0],
+          `href="${funcs.encode(hrefMatches[i][1])}"`
+        );
+      } else if (hrefMatches[i][1] == "/") {
+        txt = txt.replaceAll(
+          hrefMatches[i][0],
+          `href="${funcs.encode(currentBaseURL)}"`
+        );
+      } else if (hrefMatches[i][1].startsWith("./")) {
+        txt = txt.replaceAll(
+          hrefMatches[i][0],
+          `href="${funcs.encode(
+            currentBaseURL + hrefMatches[i][1].replaceAll(".", "")
+          )}"`
+        );
+      } else {
+        txt = txt.replaceAll(
+          hrefMatches[i][0],
+          `href="${funcs.encode(currentBaseURL + hrefMatches[i][1])}"`
+        );
+      }
     }
     let srcMatches = [...txt.matchAll(/src="([a-zA-Z:\/?&0-9_#-.]*)"/g)];
     for (let i = 0; i < srcMatches.length; i++) {
-      txt = txt.replaceAll(
-        srcMatches[i][0],
-        `src="${funcs.encode(srcMatches[i][1])}"`
-      );
+      if (srcMatches[i][1].startsWith("./")) {
+        txt = txt.replaceAll(
+          srcMatches[i][0],
+          `href="${funcs.encode(
+            currentBaseURL + srcMatches[i][1].replaceAll(".", "")
+          )}"`
+        );
+      } else {
+        txt = txt.replaceAll(
+          srcMatches[i][0],
+          `src="${funcs.encode(srcMatches[i][1])}"`
+        );
+      }
     }
+    txt = txt.replaceAll(
+      "</body>",
+      `<script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+    <script>
+      eruda.init();
+    </script>
+    </body>`
+    );
     res.send(txt);
     res.end();
   } catch (e) {
